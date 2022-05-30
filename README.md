@@ -2,6 +2,7 @@
 ```
 docker build -t hadoop . 
 ```
+*This command should be executed from this git directory's root
 ### Gerando o Conainer
 
 ```
