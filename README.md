@@ -6,5 +6,5 @@ docker build -t hadoop .
 ### Gerando o Conainer
 
 ```
-docker run -p 8088:8088 -p 9000:9000 --name my-hadoop-container -d hadoop
+docker run -p 7077:7077 -p 8080:8080 -p 8088:8088 -p 9000:9000 --name my-hadoop-container -d hadoop
 ```
