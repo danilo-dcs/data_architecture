@@ -73,4 +73,4 @@ EXPOSE 7077 8080 8088 9000
 # 9000 - Hadoop monitor
 
 # start hadoop
-CMD bash start-hadoop.sh start-spark.sh
+CMD bash start.sh
