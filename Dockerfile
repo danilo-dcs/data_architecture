@@ -8,12 +8,14 @@ ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
 # install packages
 RUN \
   apt-get update && apt-get install -y \
-  build-essential \
-  curl \
   ssh \
   rsync \
   vim \
-  openjdk-8-jdk \
+  openjdk-8-jdk 
+
+RUN apt install \
+  build-essential \
+  curl \
   python3 \
   pip \
   maven
