@@ -1,10 +1,5 @@
 FROM ubuntu:22.04
 
-# set environment vars
-ENV HADOOP_HOME /opt/hadoop
-ENV SPARK_HOME /opt/spark
-ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
-
 # install packages
 RUN \
   apt-get update && apt-get install -y \
@@ -13,24 +8,40 @@ RUN \
   nano \
   openjdk-8-jdk 
 
-# download and extract hadoop, set JAVA_HOME in hadoop-env.sh, update path
+
+# Making hadoop repository
+RUN \
+  mkdir /opt/hadoop
+
+# download and extract hadoop
 RUN \
   wget http://mirror.intergrid.com.au/apache/hadoop/common/hadoop-3.3.0/hadoop-3.3.0.tar.gz && \
-  tar -xzf hadoop-3.3.0.tar.gz && \
-  mv hadoop-3.3.0 $HADOOP_HOME && \
-  echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  echo "export HDFS_NAMENODE_USER=root" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  echo "export HDFS_DATANODE_USER=root" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  echo "export HDFS_SECONDARYNAMENODE_USER=root" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  echo "export YARN_RESOURCEMANAGER_USER=root" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  echo "export YARN_NODEMANAGER_USER=root" >> $HADOOP_HOME/etc/hadoop/hadoop-env.sh && \
-  echo "PATH=$PATH:$HADOOP_HOME/bin" >> ~/.bashrc
+  tar -xvzf hadoop-3.3.0.tar.gz -C /opt/hadoop
 
+# set environment vars
+ENV HADOOP_HOME /opt/hadoop/hadoop-3.3.0
+ENV JAVA_HOME /usr/lib/jvm/java-8-openjdk-amd64
+ENV HADOOP_CONF_DIR=$HADOOP_HOME/etc/hadoop
+
+# configuring hadoop files
+
+RUN \
+  echo "PATH=$PATH:$HADOOP_HOME/bin" >> ~/.bashrc && \
+  echo "export JAVA_HOME=$JAVA_HOME" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
+  echo "export HDFS_NAMENODE_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
+  echo "export HDFS_DATANODE_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
+  echo "export HDFS_SECONDARYNAMENODE_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
+  echo "export YARN_RESOURCEMANAGER_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
+  echo "export YARN_NODEMANAGER_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh
+  
 # create ssh keys
 RUN \
   ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \
   cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys && \
   chmod 0600 ~/.ssh/authorized_keys
+
+RUN \
+  service ssh restart
 
 # copy hadoop configs
 ADD configs/*xml $HADOOP_HOME/etc/hadoop/
