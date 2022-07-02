@@ -1,8 +1,11 @@
 FROM ubuntu:22.04
 
 # install packages
+
+RUN apg-get update && apt-get install -y apt-utils
+
 RUN \
-  apt-get update && apt-get install -y \
+  apt-get install -y \
   ssh \
   rsync \
   nano \
@@ -33,7 +36,6 @@ RUN \
   echo "export HDFS_SECONDARYNAMENODE_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
   echo "export YARN_RESOURCEMANAGER_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh && \
   echo "export YARN_NODEMANAGER_USER=root" >> $HADOOP_CONF_DIR/hadoop-env.sh
-  
 # create ssh keys
 RUN \
   ssh-keygen -t rsa -P '' -f ~/.ssh/id_rsa && \

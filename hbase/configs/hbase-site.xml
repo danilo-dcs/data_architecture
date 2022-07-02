@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+  <property>
+    <name>hbase.cluster.distributed</name>
+    <value>true</value>
+  </property>
+  <property>
+    <name>hbase.rootdir</name>
+    <value>/var/tmp</value>
+  </property>
+  <property>
+    <name>hbase.unsafe.stream.capability.enforce</name>
+    <value>false</value>
+  </property>
+  <!-- para configurar o repositório do hbase dentro do hadoop -->
+  <!-- <property>
+    <name>hbase.rootdir</name>
+    <value>hdfs://localhost:8020/hbase</value>
+  </property> -->
+</configuration>
