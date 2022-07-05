@@ -2,7 +2,7 @@ FROM ubuntu:22.04
 
 # install packages
 
-RUN apg-get update && apt-get install -y apt-utils
+RUN apt-get update && apt-get install -y apt-utils
 
 RUN \
   apt-get install -y \
