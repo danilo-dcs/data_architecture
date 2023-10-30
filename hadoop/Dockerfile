@@ -55,11 +55,11 @@ ADD configs/ssh_config /root/.ssh/config
 ADD hadoop-start.sh hadoop-start.sh
 
 # expose various ports
-EXPOSE 8088 9000 9864 9866 9870 50070 50075 50030 50060
+EXPOSE 8088 9000 9864 9866 9870
 
 # 8088 - Hadoop UI
 # 9000 - Hadoop monitor
 # 9870 - dfs monitor
 
 # start hadoop
-CMD bash hadoop-start.sh
+ENTRYPOINT ['bash', 'hadoop-start.sh']
